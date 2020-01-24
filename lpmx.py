@@ -48,7 +48,7 @@ def main():
     sf = StringFilter(["apt-get install -t buster-backports -y"])
     #read data
     with open('biocontainers_digest') as data:
-        with open('biocontainers_report','w') as f:
+        with open('biocontainers_report','w+') as f:
             for line in data:
                 vals = line.split( )
                 print("**************** working on %s/%s:%s **********************\n" %(vals[0], vals[1],vals[2]))
