@@ -42,28 +42,33 @@ class StringFilter:
                         return True
         return False
 
-
 def main():
     sh = ShowHistory(20)
-    contents = sh.run("biocontainers", "samtools","v1.9-4-deb_cv1","sha256:da61624fda230e94867c9429ca1112e1e77c24e500b52dfc84eaf2f5820b4a2a")
     fw = WordsFilter(["ADD","LABEL", "MAINTAINER"])
-    sf = StringFilter(["xx apt-get install -t buster-backports -y"])
-    if contents:
-        contents = fw.filter(contents)
-        if sf.filter(contents):
-            #output to file markdown
-            pass
-        else:
-            for content in contents:
-                print(content)
-            choice = input('is it okay?(y/n): ')
-            if choice == 'y':
-                #output  to file markdown
-                pass
-            else:
-                reason = input('input your reason: ')
-                #output reason to file markdown
-                pass
+    sf = StringFilter(["apt-get install -t buster-backports -y"])
+    #read data
+    with open('biocontainers_digest') as data:
+        with open('biocontainers_report','w') as f:
+            for line in data:
+                print("**************** working on %s/%s:%s **********************" %(vals[0], vals[1],vals[2]))
+                vals = line.split( )
+                contents = sh.run(vals[0],vals[1],vals[2],vals[3])
+                if contents:
+                    contents = fw.filter(contents)
+                    if sf.filter(contents):
+                        #output to file markdown
+                        f.write("| %s/%s:%s | 🆗 | |\n" %(vals[0], vals[1], vals[2]))
+                    else:
+                        for content in contents:
+                            print(content)
+                        choice = input('is it okay?(y/n): ')
+                        if choice == 'y':
+                            #output  to file markdown
+                            f.write("| %s/%s:%s | 🆗 | |\n" %(vals[0], vals[1], vals[2]))
+                        else:
+                            reason = input('input your reason: ')
+                            #output reason to file markdown
+                            f.write("| %s/%s:%s | ⭕😭 | %s |\n" %(vals[0], vals[1], vals[2], reason))
 
 if __name__=="__main__":
     main()
