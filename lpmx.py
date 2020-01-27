@@ -1,4 +1,5 @@
 from main import ShowHistory
+import subprocess
 
 """
 This file is only used for lpmx
@@ -42,6 +43,14 @@ class StringFilter:
                         return True
         return False
 
+def BashCommands(commands):
+    if not isinstance(commands, list):
+        raise Exception('commands should be the type of list')
+
+    #run the commands and return the result
+    subprocess.run(commands, shell = True)
+
+
 def main():
     sh = ShowHistory(20)
     fw = WordsFilter(["ADD","LABEL", "MAINTAINER"])
@@ -61,6 +70,10 @@ def main():
                     else:
                         for content in contents:
                             print(content)
+                        lchoice = input('will you use lpmx to run it?')
+                        if lchoice == 'y':
+                            #start running lpmx to download and create container
+                            BashCommands(['/bin/bash'])
                         choice = input('is it okay?(y/n): ')
                         if choice == 'y':
                             #output  to file markdown
