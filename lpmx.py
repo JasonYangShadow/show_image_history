@@ -81,7 +81,7 @@ def main():
                         else:
                             reason = input('input your reason: ')
                             #output reason to file markdown
-                            f.write("| %s/%s:%s | ⭕😭 | %s |\n" %(vals[0], vals[1], vals[2], reason))
+                            f.write("| %s/%s:%s | ⛔ | %s |\n" %(vals[0], vals[1], vals[2], reason))
 
 if __name__=="__main__":
     main()
